@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1024956451444",
+    "project_id": "lista-de-contactos-7df9a",
+    "storage_bucket": "lista-de-contactos-7df9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024956451444:android:70df331663d2417b5adf21",
+        "android_client_info": {
+          "package_name": "ipca.lista_de_contactos.a26530"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCr0sEyNPgkaMXrAyDIuU7fmaH0nIssE10"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
