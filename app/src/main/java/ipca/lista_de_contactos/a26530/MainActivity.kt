@@ -1,18 +1,57 @@
 package ipca.lista_de_contactos.a26530
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestoreSettings
+
+
 class MainActivity : AppCompatActivity() {
 
-    val contactList = arrayListOf<Contacto>(
-        Contacto("Marco", "+351 960119793"),
-        Contacto("Antonio", "+352 912532531")
-    )
+
+    val contactList = arrayListOf<Contacto>()
+    val adapter = ContactAdapter()
+
+//Firebase
+    fun fetchContacts()
+    {
+        var db = FirebaseFirestore.getInstance()
+
+        contactList.clear()
+
+        db.collection("dbContactos").get()
+            .addOnSuccessListener {
+                documents ->
+                if (documents != null)
+                {
+                    for (document in documents){
+
+                        val  nomeDocument = document.getString("nome")
+                        val  numeroDocumet = document.getString("numero")
+
+                        contactList.add(Contacto(nomeDocument,numeroDocumet ))
+                    }
+                    // Notifique o adapter que os dados mudaram
+                    adapter.notifyDataSetChanged()
+                }
+                else{
+                    Log.d("fetchContacts", "Não existe nenhum documento na collection")
+                }
+            }
+
+
+
+    }
+/////////////////
+
 
 
 
@@ -21,10 +60,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var listViewContact = findViewById<ListView>(R.id.listViewId)
-        listViewContact.adapter = ContactAdapter()
 
+        //Ação ao clicar no botão
+        val botaoAdd = findViewById<Button>(R.id.buttonAdd)
+
+        botaoAdd.setOnClickListener{
+            val intent = Intent(this@MainActivity, AddActivity::class.java)
+            startActivity(intent)
+
+        }
+
+
+        var listViewContact = findViewById<ListView>(R.id.listViewId)
+        listViewContact.adapter = adapter
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        fetchContacts()
+    }
+
 
     inner class ContactAdapter: BaseAdapter() {
         override fun getCount(): Int {
